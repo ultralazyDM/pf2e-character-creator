@@ -1,0 +1,1192 @@
+<!-- templates/character-master.html -->
+
+<div class="cm-root">
+    <style>
+        .pf2e-character-master .window-content {
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+
+        .pf2e-character-master .cm-root {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pf2e-character-master .cm-container {
+            flex: 1 1 auto;
+            display: flex;
+            min-height: 0;
+        }
+
+        .pf2e-character-master .cm-sidebar {
+            flex: 0 0 180px;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            padding: 0.5rem;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .pf2e-character-master .cm-main {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            padding: 0.5rem;
+            box-sizing: border-box;
+            min-height: 0;
+        }
+
+        .pf2e-character-master .cm-main-body {
+            flex: 1 1 auto;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .pf2e-character-master .cm-step {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            min-height: 0;
+        }
+
+        .pf2e-character-master .cm-step-header {
+            flex: 0 0 auto;
+            margin-bottom: 0.5rem;
+        }
+
+        .pf2e-character-master .cm-step-layout {
+            flex: 1 1 auto;
+            display: flex;
+            gap: 0.75rem;
+            min-height: 0;
+        }
+
+        .pf2e-character-master .cm-step-list {
+            flex: 2 2 0;
+            overflow-y: auto;
+            min-height: 0;
+        }
+
+        .pf2e-character-master .cm-step-detail {
+            flex: 1 1 0;
+            overflow-y: auto;
+            min-height: 0;
+        }
+
+        .pf2e-character-master .cm-footer {
+            flex: 0 0 auto;
+            padding-top: 0.25rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 0.25rem;
+        }
+
+        .pf2e-character-master .cm-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pf2e-character-master .cm-footer-right button {
+            margin-left: 0.25rem;
+        }
+
+        .pf2e-character-master .cm-steps-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .pf2e-character-master .cm-step-item {
+            padding: 0.25rem 0.5rem;
+            margin-bottom: 0.25rem;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+            .pf2e-character-master .cm-step-item.active {
+                background: rgba(255,255,255,0.1);
+                font-weight: bold;
+            }
+
+        .pf2e-character-master .cm-ancestry-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 0.4rem;
+        }
+
+        .pf2e-character-master .cm-ancestry-card {
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 0.25rem 0.35rem;
+            display: flex;
+            gap: 0.35rem;
+            align-items: center;
+            cursor: pointer;
+        }
+
+            .pf2e-character-master .cm-ancestry-card.selected {
+                border-color: #ffcc66;
+                box-shadow: 0 0 4px rgba(255,204,102,0.6);
+            }
+
+        .pf2e-character-master .cm-ancestry-image {
+            flex: 0 0 32px;
+            height: 32px;
+            border-radius: 4px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0,0,0,0.4);
+        }
+
+            .pf2e-character-master .cm-ancestry-image img {
+                width: 32px;
+                height: 32px;
+                object-fit: cover;
+            }
+
+        .pf2e-character-master .cm-ancestry-placeholder {
+            font-size: 10px;
+            opacity: 0.7;
+            text-align: center;
+            padding: 0 2px;
+        }
+
+        .pf2e-character-master .cm-ancestry-content {
+            flex: 1 1 auto;
+        }
+
+        .pf2e-character-master .cm-ancestry-name {
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.2;
+        }
+
+        /* Кнопки подклассов (старый стиль, для совместимости) */
+        .pf2e-character-master .cm-subclass-button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 0.3rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(0,0,0,0.45);
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+            .pf2e-character-master .cm-subclass-button:hover {
+                background: rgba(255,255,255,0.06);
+            }
+
+        .pf2e-character-master .cm-ancestry-card.selected .cm-subclass-button {
+            border-color: #ffcc66;
+            background: rgba(255,204,102,0.1);
+            box-shadow: 0 0 4px rgba(255,204,102,0.6);
+        }
+
+        .pf2e-character-master .cm-detail-dl {
+            margin: 0 0 0.5rem 0;
+        }
+
+            .pf2e-character-master .cm-detail-dl dt {
+                font-weight: bold;
+                margin-top: 0.25rem;
+                font-size: 12px;
+            }
+
+            .pf2e-character-master .cm-detail-dl dd {
+                margin: 0;
+                font-size: 12px;
+            }
+
+        .pf2e-character-master .cm-detail-subheader {
+            margin: 0.5rem 0 0.25rem;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .pf2e-character-master .cm-features-list {
+            list-style: disc;
+            margin: 0 0 0.5rem 1rem;
+            padding: 0;
+            font-size: 12px;
+        }
+
+        .pf2e-character-master .cm-feature-item {
+            margin-bottom: 0.15rem;
+        }
+
+        .pf2e-character-master .cm-detail-description {
+            font-size: 12px;
+        }
+
+        .pf2e-character-master .cm-empty {
+            opacity: 0.7;
+            font-size: 12px;
+        }
+
+        .pf2e-character-master .cm-main-header h1 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .pf2e-character-master .cm-main-subtitle {
+            margin: 0.1rem 0 0.4rem;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .pf2e-character-master .cm-btn {
+            font-size: 12px;
+            padding: 0.25rem 0.5rem;
+        }
+
+        .pf2e-character-master .cm-step-indicator {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* Группы подклассов */
+        .pf2e-character-master .cm-subclass-groups {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .pf2e-character-master .cm-subclass-group {
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 0.35rem 0.4rem;
+            background: rgba(0,0,0,0.35);
+        }
+
+        .pf2e-character-master .cm-subclass-group-title {
+            margin: 0 0 0.25rem 0;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .pf2e-character-master .cm-subclass-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 0.4rem;
+        }
+
+        .pf2e-character-master .cm-subclass-option {
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.12);
+            padding: 0.3rem 0.4rem;
+            background: rgba(0,0,0,0.35);
+            cursor: pointer;
+            text-align: left;
+        }
+
+            .pf2e-character-master .cm-subclass-option.selected {
+                border-color: #ffcc66;
+                box-shadow: 0 0 4px rgba(255,204,102,0.6);
+                background: rgba(255,204,102,0.12);
+            }
+
+            .pf2e-character-master .cm-subclass-option strong {
+                display: block;
+                margin-bottom: 0;
+                font-size: 12px;
+            }
+
+        /* Правый блок на шаге подкласса растянут вниз */
+        .pf2e-character-master .cm-step-subclass .cm-step-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pf2e-character-master .cm-step-subclass .cm-detail-block {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pf2e-character-master .cm-step-subclass .cm-detail-description-single {
+            flex: 1 1 auto;
+        }
+
+        /* Шаг атрибутов — растягиваем таблицу и правый блок */
+        .pf2e-character-master .cm-step-abilities .cm-step-detail {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pf2e-character-master .cm-step-abilities .cm-detail-block {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+
+    <div class="cm-container">
+        <!-- Левая колонка: шаги мастера -->
+        <aside class="cm-sidebar">
+            <header class="cm-sidebar-header">
+                <h2>{{localize "PF2ECM.sidebar.title"}}</h2>
+            </header>
+            <ol class="cm-steps-list">
+                {{#each steps}}
+                <li class="cm-step-item {{#if (eq ../currentStepId this.id)}}active{{/if}}"
+                    data-step-id="{{this.id}}"
+                    data-action="selectStep">
+                    <span class="cm-step-label">{{this.label}}</span>
+                </li>
+                {{/each}}
+            </ol>
+        </aside>
+
+        <!-- Основная область контента -->
+        <section class="cm-main">
+            <header class="cm-main-header">
+                <h1>{{localize "PF2ECM.app.title"}}</h1>
+                <p class="cm-main-subtitle">
+                    {{#if actorName}}
+                    {{localize "PF2ECM.app.subtitle"}} - {{actorName}}
+                    {{else}}
+                    {{localize "PF2ECM.app.subtitle"}}
+                    {{/if}}
+                </p>
+            </header>
+
+            <div class="cm-main-body">
+                {{!-- Шаг 1: Родословная --}}
+                {{#if (eq currentStepId "ancestry")}}
+                <section class="cm-step cm-step-ancestry">
+                    <header class="cm-step-header">
+                        <h2>{{localize "PF2ECM.step.ancestry"}}</h2>
+                        <p>{{localize "PF2ECM.ancestry.description"}}</p>
+                    </header>
+
+                    <div class="cm-step-layout">
+                        <div class="cm-step-list">
+                            {{#if ancestries.length}}
+                            <div class="cm-ancestry-list">
+                                {{#each ancestries}}
+                                <article class="cm-ancestry-card {{#if (eq ../selectedAncestryId this.id)}}selected{{/if}}"
+                                         data-ancestry-id="{{this.id}}"
+                                         data-ancestry-name="{{this.name}}"
+                                         data-ancestry-slug="{{this.slug}}"
+                                         data-action="selectAncestry">
+                                    <div class="cm-ancestry-image">
+                                        {{#if this.img}}
+                                        <img src="{{this.img}}" alt="{{this.name}}">
+                                        {{else}}
+                                        <div class="cm-ancestry-placeholder">
+                                            {{localize "PF2ECM.ancestry.noImage"}}
+                                        </div>
+                                        {{/if}}
+                                    </div>
+                                    <div class="cm-ancestry-content">
+                                        <h3 class="cm-ancestry-name">{{this.name}}</h3>
+                                    </div>
+                                </article>
+                                {{/each}}
+                            </div>
+                            {{else}}
+                            <p class="cm-empty">
+                                {{localize "PF2ECM.ancestry.empty"}}
+                            </p>
+                            {{/if}}
+                        </div>
+
+                        <aside class="cm-step-detail">
+                            {{#if currentAncestry}}
+                            <div class="cm-detail-block">
+                                <h3>{{localize "PF2ECM.ancestry.details.header"}}</h3>
+                                <dl class="cm-detail-dl">
+                                    <dt>{{localize "PF2ECM.ancestry.details.size"}}</dt>
+                                    <dd>{{currentAncestry.sizeLabel}}</dd>
+
+                                    <dt>{{localize "PF2ECM.ancestry.details.hp"}}</dt>
+                                    <dd>{{currentAncestry.hp}}</dd>
+
+                                    <dt>{{localize "PF2ECM.ancestry.details.speed"}}</dt>
+                                    <dd>
+                                        {{#if currentAncestry.speed}}
+                                        {{currentAncestry.speed}}
+                                        {{else}}
+                                        —
+                                        {{/if}}
+                                    </dd>
+
+                                    <dt>{{localize "PF2ECM.ancestry.details.abilities"}}</dt>
+                                    <dd>
+                                        {{#if currentAncestry.boosts.length}}
+                                        {{join currentAncestry.boosts ", "}}
+                                        {{else}}
+                                        {{localize "PF2ECM.ancestry.details.none"}}
+                                        {{/if}}
+                                    </dd>
+
+                                    <dt>{{localize "PF2ECM.ancestry.details.flaws"}}</dt>
+                                    <dd>
+                                        {{#if currentAncestry.flaws.length}}
+                                        {{join currentAncestry.flaws ", "}}
+                                        {{else}}
+                                        {{localize "PF2ECM.ancestry.details.none"}}
+                                        {{/if}}
+                                    </dd>
+
+                                    <dt>{{localize "PF2ECM.ancestry.details.languages"}}</dt>
+                                    <dd>
+                                        {{#if currentAncestry.languages.length}}
+                                        {{join currentAncestry.languages ", "}}
+                                        {{else}}
+                                        {{localize "PF2ECM.ancestry.details.none"}}
+                                        {{/if}}
+                                    </dd>
+
+                                    <dt>{{localize "PF2ECM.ancestry.details.additionalLanguages"}}</dt>
+                                    <dd>{{currentAncestry.additionalLanguages}}</dd>
+                                </dl>
+
+                                <h4 class="cm-detail-subheader">
+                                    {{localize "PF2ECM.ancestry.details.featuresHeader"}}
+                                </h4>
+                                <ul class="cm-features-list">
+                                    {{#if currentAncestry.features.length}}
+                                    {{#each currentAncestry.features}}
+                                    <li class="cm-feature-item">
+                                        {{{this.html}}}
+                                    </li>
+                                    {{/each}}
+                                    {{else}}
+                                    <li class="cm-feature-item cm-empty">
+                                        {{localize "PF2ECM.ancestry.details.featuresNone"}}
+                                    </li>
+                                    {{/if}}
+                                </ul>
+
+                                <h4 class="cm-detail-subheader">
+                                    {{localize "PF2ECM.ancestry.details.descriptionHeader"}}
+                                </h4>
+                                <div class="cm-detail-description">
+                                    {{{currentAncestry.description}}}
+                                </div>
+                            </div>
+                            {{else}}
+                            <p class="cm-empty">{{localize "PF2ECM.ancestry.details.hint"}}</p>
+                            {{/if}}
+                        </aside>
+                    </div>
+                </section>
+
+                {{!-- Шаг 2: Наследие --}}
+                {{else if (eq currentStepId "heritage")}}
+                <section class="cm-step cm-step-heritage">
+                    <header class="cm-step-header">
+                        <h2>{{localize "PF2ECM.step.heritage"}}</h2>
+                        <p>{{localize "PF2ECM.heritage.description"}}</p>
+                    </header>
+
+                    <div class="cm-step-layout">
+                        <div class="cm-step-list">
+                            {{#if hasSelectedAncestry}}
+                            {{#if heritages.length}}
+                            <div class="cm-ancestry-list">
+                                {{#each heritages}}
+                                <article class="cm-ancestry-card {{#if (eq ../selectedHeritageId this.id)}}selected{{/if}}"
+                                         data-heritage-id="{{this.id}}"
+                                         data-action="selectHeritage">
+                                    <div class="cm-ancestry-image">
+                                        {{#if this.img}}
+                                        <img src="{{this.img}}" alt="{{this.name}}">
+                                        {{else}}
+                                        <div class="cm-ancestry-placeholder">
+                                            {{localize "PF2ECM.heritage.noImage"}}
+                                        </div>
+                                        {{/if}}
+                                    </div>
+                                    <div class="cm-ancestry-content">
+                                        <h3 class="cm-ancestry-name">{{this.name}}</h3>
+                                    </div>
+                                </article>
+                                {{/each}}
+                            </div>
+                            {{else}}
+                            <p class="cm-empty">
+                                {{localize "PF2ECM.heritage.empty"}}
+                            </p>
+                            {{/if}}
+                            {{else}}
+                            <p class="cm-empty">
+                                {{localize "PF2ECM.heritage.noAncestry"}}
+                            </p>
+                            {{/if}}
+                        </div>
+
+                        <aside class="cm-step-detail">
+                            {{#if currentHeritage}}
+                            <div class="cm-detail-block">
+                                <h3>{{currentHeritage.name}}</h3>
+                                {{#if currentHeritage.ancestryName}}
+                                <p class="cm-heritage-ancestry">
+                                    {{currentHeritage.ancestryName}}
+                                </p>
+                                {{/if}}
+                                <div class="cm-detail-description">
+                                    {{{currentHeritage.description}}}
+                                </div>
+                            </div>
+                            {{else}}
+                            <p class="cm-empty">
+                                {{localize "PF2ECM.heritage.hint"}}
+                            </p>
+                            {{/if}}
+                        </aside>
+                    </div>
+                </section>
+
+                {{!-- Шаг 3: Предыстория --}}
+                {{else if (eq currentStepId "background")}}
+                <section class="cm-step cm-step-background">
+                    <header class="cm-step-header">
+                        <h2>{{localize "PF2ECM.step.background"}}</h2>
+                        <p>{{localize "PF2ECM.background.description"}}</p>
+                    </header>
+
+                    <div class="cm-step-layout">
+                        <div class="cm-step-list">
+                            {{#if backgrounds.length}}
+                            <div class="cm-ancestry-list">
+                                {{#each backgrounds}}
+                                <article class="cm-ancestry-card {{#if (eq ../selectedBackgroundId this.id)}}selected{{/if}}"
+                                         data-background-id="{{this.id}}"
+                                         data-action="selectBackground">
+                                    <div class="cm-ancestry-image">
+                                        {{#if this.img}}
+                                        <img src="{{this.img}}" alt="{{this.name}}">
+                                        {{else}}
+                                        <div class="cm-ancestry-placeholder">
+                                            {{localize "PF2ECM.background.noImage"}}
+                                        </div>
+                                        {{/if}}
+                                    </div>
+                                    <div class="cm-ancestry-content">
+                                        <h3 class="cm-ancestry-name">{{this.name}}</h3>
+                                    </div>
+                                </article>
+                                {{/each}}
+                            </div>
+                            {{else}}
+                            <p class="cm-empty">
+                                {{localize "PF2ECM.background.empty"}}
+                            </p>
+                            {{/if}}
+                        </div>
+
+                        <aside class="cm-step-detail">
+                            {{#if currentBackground}}
+                            <div class="cm-detail-block">
+                                <h3>{{localize "PF2ECM.background.details.header"}}</h3>
+                                <dl class="cm-detail-dl">
+                                    <dt>{{localize "PF2ECM.background.details.abilities"}}</dt>
+                                    <dd>
+                                        {{#if currentBackground.boosts.length}}
+                                        {{join currentBackground.boosts ", "}}
+                                        {{else}}
+                                        {{localize "PF2ECM.background.details.none"}}
+                                        {{/if}}
+                                    </dd>
+
+                                    <dt>{{localize "PF2ECM.background.details.skills"}}</dt>
+                                    <dd>
+                                        {{#if currentBackground.skills.length}}
+                                        {{join currentBackground.skills ", "}}
+                                        {{else}}
+                                        {{localize "PF2ECM.background.details.none"}}
+                                        {{/if}}
+                                    </dd>
+                                </dl>
+
+                                <h4 class="cm-detail-subheader">
+                                    {{localize "PF2ECM.background.details.featuresHeader"}}
+                                </h4>
+                                <ul class="cm-features-list">
+                                    {{#if currentBackground.features.length}}
+                                    {{#each currentBackground.features}}
+                                    <li class="cm-feature-item">
+                                        {{{this.html}}}
+                                    </li>
+                                    {{/each}}
+                                    {{else}}
+                                    <li class="cm-feature-item cm-empty">
+                                        {{localize "PF2ECM.background.details.featuresNone"}}
+                                    </li>
+                                    {{/if}}
+                                </ul>
+
+                                <h4 class="cm-detail-subheader">
+                                    {{localize "PF2ECM.background.details.descriptionHeader"}}
+                                </h4>
+                                <div class="cm-detail-description">
+                                    {{{currentBackground.description}}}
+                                </div>
+                            </div>
+                            {{else}}
+                            <p class="cm-empty">
+                                {{localize "PF2ECM.background.details.hint"}}
+                            </p>
+                            {{/if}}
+                        </aside>
+                    </div>
+                </section>
+
+                {{!-- Шаг 4: Класс --}}
+                {{else if (eq currentStepId "class")}}
+                <section class="cm-step cm-step-class">
+                    <header class="cm-step-header">
+                        <h2>{{localize "PF2ECM.step.class"}}</h2>
+                        <p>{{localize "PF2ECM.class.description"}}</p>
+                    </header>
+
+                    <div class="cm-step-layout">
+                        <div class="cm-step-list">
+                            {{#if classes.length}}
+                            <div class="cm-ancestry-list">
+                                {{#each classes}}
+                                <article class="cm-ancestry-card {{#if (eq ../selectedClassId this.id)}}selected{{/if}}"
+                                         data-class-id="{{this.id}}"
+                                         data-action="selectClass">
+                                    <div class="cm-ancestry-image">
+                                        {{#if this.img}}
+                                        <img src="{{this.img}}" alt="{{this.name}}">
+                                        {{else}}
+                                        <div class="cm-ancestry-placeholder">
+                                            {{localize "PF2ECM.class.noImage"}}
+                                        </div>
+                                        {{/if}}
+                                    </div>
+                                    <div class="cm-ancestry-content">
+                                        <h3 class="cm-ancestry-name">{{this.name}}</h3>
+                                    </div>
+                                </article>
+                                {{/each}}
+                            </div>
+                            {{else}}
+                            <p class="cm-empty">
+                                {{localize "PF2ECM.class.empty"}}
+                            </p>
+                            {{/if}}
+                        </div>
+
+                        <aside class="cm-step-detail">
+                            {{#if currentClass}}
+                            <div class="cm-detail-block">
+                                <h3>{{localize "PF2ECM.class.details.header"}}</h3>
+                                <dl class="cm-detail-dl">
+                                    <dt>{{localize "PF2ECM.class.details.hp"}}</dt>
+                                    <dd>{{currentClass.hp}}</dd>
+
+                                    <dt>{{localize "PF2ECM.class.details.keyAbilities"}}</dt>
+                                    <dd>
+                                        {{#if currentClass.keyAbilities.length}}
+                                        {{join currentClass.keyAbilities ", "}}
+                                        {{else}}
+                                        {{localize "PF2ECM.class.details.none"}}
+                                        {{/if}}
+                                    </dd>
+
+                                    <dt>{{localize "PF2ECM.class.details.traits"}}</dt>
+                                    <dd>
+                                        {{#if currentClass.traits.length}}
+                                        {{join currentClass.traits ", "}}
+                                        {{else}}
+                                        {{localize "PF2ECM.class.details.none"}}
+                                        {{/if}}
+                                    </dd>
+                                </dl>
+
+                                <h4 class="cm-detail-subheader">
+                                    {{localize "PF2ECM.class.details.skillsHeader"}}
+                                </h4>
+                                <div class="cm-detail-text">
+                                    {{#if currentClass.skills.length}}
+                                    {{join currentClass.skills ", "}}
+                                    {{else}}
+                                    {{localize "PF2ECM.class.details.none"}}
+                                    {{/if}}
+                                </div>
+
+                                <h4 class="cm-detail-subheader">
+                                    {{localize "PF2ECM.class.details.proficienciesHeader"}}
+                                </h4>
+                                {{#if currentClass.proficiencies}}
+                                <dl class="cm-detail-dl">
+                                    <dt>{{localize "PF2ECM.class.details.perception"}}</dt>
+                                    <dd>
+                                        {{#if currentClass.proficiencies.perception}}
+                                        {{currentClass.proficiencies.perception}}
+                                        {{else}}
+                                        {{localize "PF2ECM.class.details.none"}}
+                                        {{/if}}
+                                    </dd>
+
+                                    <dt>{{localize "PF2ECM.class.details.savingThrows"}}</dt>
+                                    <dd>
+                                        <div>
+                                            {{localize "PF2ECM.class.details.fortitude"}}:
+                                            {{#if currentClass.proficiencies.savingThrows.fortitude}}
+                                            {{currentClass.proficiencies.savingThrows.fortitude}}
+                                            {{else}}
+                                            {{localize "PF2ECM.class.details.none"}}
+                                            {{/if}}
+                                        </div>
+                                        <div>
+                                            {{localize "PF2ECM.class.details.reflex"}}:
+                                            {{#if currentClass.proficiencies.savingThrows.reflex}}
+                                            {{currentClass.proficiencies.savingThrows.reflex}}
+                                            {{else}}
+                                            {{localize "PF2ECM.class.details.none"}}
+                                            {{/if}}
+                                        </div>
+                                        <div>
+                                            {{localize "PF2ECM.class.details.will"}}:
+                                            {{#if currentClass.proficiencies.savingThrows.will}}
+                                            {{currentClass.proficiencies.savingThrows.will}}
+                                            {{else}}
+                                            {{localize "PF2ECM.class.details.none"}}
+                                            {{/if}}
+                                        </div>
+                                    </dd>
+
+                                    <dt>{{localize "PF2ECM.class.details.attacks"}}</dt>
+                                    <dd>
+                                        <div>
+                                            {{localize "PF2ECM.class.details.attacksSimple"}}:
+                                            {{#if currentClass.proficiencies.attacks.simple}}
+                                            {{currentClass.proficiencies.attacks.simple}}
+                                            {{else}}
+                                            {{localize "PF2ECM.class.details.none"}}
+                                            {{/if}}
+                                        </div>
+                                        <div>
+                                            {{localize "PF2ECM.class.details.attacksMartial"}}:
+                                            {{#if currentClass.proficiencies.attacks.martial}}
+                                            {{currentClass.proficiencies.attacks.martial}}
+                                            {{else}}
+                                            {{localize "PF2ECM.class.details.none"}}
+                                            {{/if}}
+                                        </div>
+                                        <div>
+                                            {{localize "PF2ECM.class.details.attacksAdvanced"}}:
+                                            {{#if currentClass.proficiencies.attacks.advanced}}
+                                            {{currentClass.proficiencies.attacks.advanced}}
+                                            {{else}}
+                                            {{localize "PF2ECM.class.details.none"}}
+                                            {{/if}}
+                                        </div>
+                                        <div>
+                                            {{localize "PF2ECM.class.details.attacksUnarmed"}}:
+                                            {{#if currentClass.proficiencies.attacks.unarmed}}
+                                            {{currentClass.proficiencies.attacks.unarmed}}
+                                            {{else}}
+                                            {{localize "PF2ECM.class.details.none"}}
+                                            {{/if}}
+                                        </div>
+                                    </dd>
+
+                                    <dt>{{localize "PF2ECM.class.details.defenses"}}</dt>
+                                    <dd>
+                                        <div>
+                                            {{localize "PF2ECM.class.details.defensesUnarmored"}}:
+                                            {{#if currentClass.proficiencies.defenses.unarmored}}
+                                            {{currentClass.proficiencies.defenses.unarmored}}
+                                            {{else}}
+                                            {{localize "PF2ECM.class.details.none"}}
+                                            {{/if}}
+                                        </div>
+                                        <div>
+                                            {{localize "PF2ECM.class.details.defensesLight"}}:
+                                            {{#if currentClass.proficiencies.defenses.light}}
+                                            {{currentClass.proficiencies.defenses.light}}
+                                            {{else}}
+                                            {{localize "PF2ECM.class.details.none"}}
+                                            {{/if}}
+                                        </div>
+                                        <div>
+                                            {{localize "PF2ECM.class.details.defensesMedium"}}:
+                                            {{#if currentClass.proficiencies.defenses.medium}}
+                                            {{currentClass.proficiencies.defenses.medium}}
+                                            {{else}}
+                                            {{localize "PF2ECM.class.details.none"}}
+                                            {{/if}}
+                                        </div>
+                                        <div>
+                                            {{localize "PF2ECM.class.details.defensesHeavy"}}:
+                                            {{#if currentClass.proficiencies.defenses.heavy}}
+                                            {{currentClass.proficiencies.defenses.heavy}}
+                                            {{else}}
+                                            {{localize "PF2ECM.class.details.none"}}
+                                            {{/if}}
+                                        </div>
+                                    </dd>
+
+                                    <dt>{{localize "PF2ECM.class.details.classDC"}}</dt>
+                                    <dd>
+                                        {{#if currentClass.proficiencies.classDC}}
+                                        {{currentClass.proficiencies.classDC}}
+                                        {{else}}
+                                        {{localize "PF2ECM.class.details.none"}}
+                                        {{/if}}
+                                    </dd>
+                                </dl>
+                                {{else}}
+                                <p class="cm-empty">
+                                    {{localize "PF2ECM.class.details.proficienciesNone"}}
+                                </p>
+                                {{/if}}
+
+                                <h4 class="cm-detail-subheader">
+                                    {{localize "PF2ECM.class.details.spellcastingHeader"}}
+                                </h4>
+                                {{#if currentClass.spellcasting.hasSpellcasting}}
+                                <dl class="cm-detail-dl">
+                                    <dt>{{localize "PF2ECM.class.details.spellTradition"}}</dt>
+                                    <dd>
+                                        {{#if currentClass.spellcasting.tradition}}
+                                        {{currentClass.spellcasting.tradition}}
+                                        {{else}}
+                                        {{localize "PF2ECM.class.details.none"}}
+                                        {{/if}}
+                                    </dd>
+
+                                    <dt>{{localize "PF2ECM.class.details.spellCastingType"}}</dt>
+                                    <dd>
+                                        {{#if currentClass.spellcasting.castingType}}
+                                        {{currentClass.spellcasting.castingType}}
+                                        {{else}}
+                                        {{localize "PF2ECM.class.details.none"}}
+                                        {{/if}}
+                                    </dd>
+                                </dl>
+                                {{else}}
+                                <p class="cm-empty">
+                                    {{localize "PF2ECM.class.details.noSpellcasting"}}
+                                </p>
+                                {{/if}}
+
+                                <h4 class="cm-detail-subheader">
+                                    {{localize "PF2ECM.class.details.keyChoicesHeader"}}
+                                </h4>
+                                <ul class="cm-features-list">
+                                    {{#if currentClass.keyChoices.length}}
+                                    {{#each currentClass.keyChoices}}
+                                    <li class="cm-feature-item">
+                                        {{{this.html}}}
+                                    </li>
+                                    {{/each}}
+                                    {{else}}
+                                    <li class="cm-feature-item cm-empty">
+                                        {{localize "PF2ECM.class.details.noKeyChoices"}}
+                                    </li>
+                                    {{/if}}
+                                </ul>
+
+                                <h4 class="cm-detail-subheader">
+                                    {{localize "PF2ECM.class.details.progressionHeader"}}
+                                </h4>
+                                {{#if currentClass.progression.length}}
+                                <ul class="cm-progression-list cm-features-list">
+                                    {{#each currentClass.progression}}
+                                    <li class="cm-progression-item">
+                                        <div class="cm-progression-level">
+                                            {{localize "PF2ECM.class.details.levelLabel"}} {{this.level}}
+                                        </div>
+                                        <ul class="cm-features-list">
+                                            {{#each this.features}}
+                                            <li class="cm-feature-item">
+                                                {{{this.html}}}
+                                            </li>
+                                            {{/each}}
+                                        </ul>
+                                    </li>
+                                    {{/each}}
+                                </ul>
+                                {{else}}
+                                <p class="cm-empty">
+                                    {{localize "PF2ECM.class.details.progressionNone"}}
+                                </p>
+                                {{/if}}
+
+                                <h4 class="cm-detail-subheader">
+                                    {{localize "PF2ECM.class.details.descriptionHeader"}}
+                                </h4>
+                                <div class="cm-detail-description">
+                                    {{{currentClass.description}}}
+                                </div>
+                            </div>
+                            {{else}}
+                            <p class="cm-empty">
+                                {{localize "PF2ECM.class.details.hint"}}
+                            </p>
+                            {{/if}}
+                        </aside>
+                    </div>
+                </section>
+
+                {{!-- Шаг 5: Подкласс (ключевые выборы класса) --}}
+                {{else if (eq currentStepId "subclass")}}
+                <section class="cm-step cm-step-subclass">
+                    <header class="cm-step-header">
+                        <h2>
+                            {{#if subclassStepLabel}}
+                            {{subclassStepLabel}}
+                            {{else}}
+                            {{localize "PF2ECM.step.subclass"}}
+                            {{/if}}
+                        </h2>
+                        <p>{{localize "PF2ECM.subclass.description"}}</p>
+                    </header>
+
+                    <div class="cm-step-layout">
+                        <!-- ЛЕВАЯ КОЛОНКА: группы и кнопки -->
+                        <div class="cm-step-list">
+                            {{#if currentClass}}
+                            {{#if subclassHasGroups}}
+                            <div class="cm-subclass-groups">
+                                {{#each subclassGroups}}
+                                <article class="cm-subclass-group" data-group-id="{{this.id}}">
+                                    <h3 class="cm-subclass-group-title">{{this.name}}</h3>
+                                    <div class="cm-subclass-options">
+                                        {{#each this.options}}
+                                        <button type="button"
+                                                class="cm-subclass-option {{#if (eq (lookup ../../subclassSelections ../id) this.id)}}selected{{/if}}"
+                                                data-action="selectSubclassOption"
+                                                data-option-id="{{this.id}}">
+                                            <strong>{{this.label}}</strong>
+                                        </button>
+                                        {{/each}}
+                                    </div>
+                                </article>
+                                {{/each}}
+                            </div>
+                            {{else}}
+                            <p class="cm-empty">
+                                {{#if subclassNoChoicesMessage}}
+                                {{subclassNoChoicesMessage}}
+                                {{else}}
+                                {{localize "PF2ECM.subclass.empty"}}
+                                {{/if}}
+                            </p>
+                            {{/if}}
+                            {{else}}
+                            <p class="cm-empty">
+                                {{localize "PF2ECM.subclass.noClass"}}
+                            </p>
+                            {{/if}}
+                        </div>
+
+                        <!-- ПРАВАЯ КОЛОНКА: описание ПОСЛЕДНЕГО выбранного варианта -->
+                        <aside class="cm-step-detail">
+                            {{#if currentClass}}
+                            <div class="cm-detail-block">
+                                <h3>{{localize "PF2ECM.subclass.details.header"}}</h3>
+
+                                {{#if subclassHasGroups}}
+                                {{#if lastSubclassOptionId}}
+                                {{#each subclassGroups}}
+                                {{#each this.options}}
+                                {{#if (eq ../../lastSubclassOptionId this.id)}}
+                                <div class="cm-detail-description cm-detail-description-single">
+                                    <h4 class="cm-detail-subheader">{{../name}}</h4>
+                                    {{{this.html}}}
+                                </div>
+                                {{/if}}
+                                {{/each}}
+                                {{/each}}
+                                {{else}}
+                                <p class="cm-empty">
+                                    {{localize "PF2ECM.subclass.details.hint"}}
+                                </p>
+                                {{/if}}
+                                {{else}}
+                                <p class="cm-empty">
+                                    {{#if subclassNoChoicesMessage}}
+                                    {{subclassNoChoicesMessage}}
+                                    {{else}}
+                                    {{localize "PF2ECM.subclass.empty"}}
+                                    {{/if}}
+                                </p>
+                                {{/if}}
+                            </div>
+                            {{else}}
+                            <p class="cm-empty">
+                                {{localize "PF2ECM.subclass.details.noClassHint"}}
+                            </p>
+                            {{/if}}
+                        </aside>
+                    </div>
+                </section>
+
+                {{!-- Шаг 6: Атрибуты --}}
+                {{else if (eq currentStepId "abilities")}}
+                <section class="cm-step cm-step-abilities">
+                    <header class="cm-step-header">
+                        <h2>{{localize "PF2ECM.step.abilities"}}</h2>
+                        <p>{{localize "PF2ECM.abilities.description"}}</p>
+                    </header>
+
+                    <div class="cm-step-layout">
+                        <!-- Левая колонка: таблица как в системном окне -->
+                        <div class="cm-step-list cm-abilities-table">
+                            <table style="width:100%; border-collapse: collapse; font-size:13px;">
+                                <thead>
+                                    <tr>
+                                        <th style="text-align:left; width:160px;">
+                                            {{localize "PF2ECM.abilities.sourceHeader"}}
+                                        </th>
+                                        {{#each abilities.abilities}}
+                                        <th style="text-align:center;">
+                                            {{lookup ../abilities.labels this}}
+                                        </th>
+                                        {{/each}}
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {{!-- Родословная --}}
+                                    <tr>
+                                        <td><b>{{localize "PF2ECM.abilities.source.ancestry"}}</b></td>
+                                        {{#each abilities.abilities}}
+                                        <td style="text-align:center;">
+                                            <button class="cm-btn"
+                                                    type="button"
+                                                    data-action="toggleAbilityBoost"
+                                                    data-source="ancestry"
+                                                    data-ability="{{this}}">
+                                                {{#if ../abilities.sources.ancestry.[this]}}
+                                                {{localize "PF2ECM.abilities.buttonBoost"}}
+                                                {{else}}
+                                                {{localize "PF2ECM.abilities.buttonEmpty"}}
+                                                {{/if}}
+                                            </button>
+                                        </td>
+                                        {{/each}}
+                                    </tr>
+
+                                    {{!-- Предыстория --}}
+                                    <tr>
+                                        <td><b>{{localize "PF2ECM.abilities.source.background"}}</b></td>
+                                        {{#each abilities.abilities}}
+                                        <td style="text-align:center;">
+                                            <button class="cm-btn"
+                                                    type="button"
+                                                    data-action="toggleAbilityBoost"
+                                                    data-source="background"
+                                                    data-ability="{{this}}">
+                                                {{#if ../abilities.sources.background.[this]}}
+                                                {{localize "PF2ECM.abilities.buttonBoost"}}
+                                                {{else}}
+                                                {{localize "PF2ECM.abilities.buttonEmpty"}}
+                                                {{/if}}
+                                            </button>
+                                        </td>
+                                        {{/each}}
+                                    </tr>
+
+                                    {{!-- Класс --}}
+                                    <tr>
+                                        <td><b>{{localize "PF2ECM.abilities.source.class"}}</b></td>
+                                        {{#each abilities.abilities}}
+                                        <td style="text-align:center;">
+                                            <button class="cm-btn"
+                                                    type="button"
+                                                    data-action="toggleAbilityBoost"
+                                                    data-source="class"
+                                                    data-ability="{{this}}">
+                                                {{#if ../abilities.sources.class.[this]}}
+                                                {{localize "PF2ECM.abilities.buttonBoost"}}
+                                                {{else}}
+                                                {{localize "PF2ECM.abilities.buttonEmpty"}}
+                                                {{/if}}
+                                            </button>
+                                        </td>
+                                        {{/each}}
+                                    </tr>
+
+                                    {{!-- Свободные: 1 уровень --}}
+                                    <tr>
+                                        <td><b>{{localize "PF2ECM.abilities.source.freeLevel1"}}</b></td>
+                                        {{#each abilities.abilities}}
+                                        <td style="text-align:center;">
+                                            <button class="cm-btn"
+                                                    type="button"
+                                                    data-action="toggleAbilityBoost"
+                                                    data-source="free_lvl1"
+                                                    data-ability="{{this}}">
+                                                {{#if ../abilities.sources.free_lvl1.[this]}}
+                                                {{localize "PF2ECM.abilities.buttonBoost"}}
+                                                {{else}}
+                                                {{localize "PF2ECM.abilities.buttonEmpty"}}
+                                                {{/if}}
+                                            </button>
+                                        </td>
+                                        {{/each}}
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Правая колонка: простая сводка -->
+                        <aside class="cm-step-detail">
+                            <div class="cm-detail-block">
+                                <h3>{{localize "PF2ECM.abilities.summary.header"}}</h3>
+                                <p class="cm-detail-description">
+                                    {{localize "PF2ECM.abilities.summary.description"}}
+                                </p>
+
+                                <ul style="list-style:none; padding:0; font-size:13px;">
+                                    {{#each abilities.abilities}}
+                                    <li style="margin:4px 0;">
+                                        <b>{{lookup ../abilities.labels this}}</b>
+                                    </li>
+                                    {{/each}}
+                                </ul>
+                            </div>
+                        </aside>
+                    </div>
+                </section>
+
+                {{!-- Резерв / прочие шаги --}}
+                {{else}}
+                <p>{{localize "PF2ECM.common.notImplemented"}}</p>
+                {{/if}}
+            </div>
+
+            <footer class="cm-footer">
+                <div class="cm-footer-left">
+                    <span class="cm-step-indicator">{{nav.stepCounterLabel}}</span>
+                </div>
+                <div class="cm-footer-right">
+                    <button class="cm-btn"
+                            type="button"
+                            data-action="goPrevStep"
+                            {{#unless nav.canGoBack}} disabled{{/unless}}>
+                        {{localize "PF2ECM.buttons.prev"}}
+                    </button>
+                    <button class="cm-btn"
+                            type="button"
+                            data-action="goNextStep"
+                            {{#unless nav.canGoNext}} disabled{{/unless}}>
+                        {{localize "PF2ECM.buttons.next"}}
+                    </button>
+                    <button class="cm-btn"
+                            type="button"
+                            data-action="closeMaster">
+                        {{localize "PF2ECM.buttons.close"}}
+                    </button>
+                </div>
+            </footer>
+        </section>
+    </div>
+</div>

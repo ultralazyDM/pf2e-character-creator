@@ -1,0 +1,124 @@
+{
+  "PF2ECM": {
+    "app": {
+      "title": "PF2e Character Master",
+      "subtitle": "Step-by-step assistant for creating and leveling up characters."
+    },
+    "controls": {
+      "button": "Character Creation Master"
+    },
+    "sidebar": {
+      "title": "Master Steps"
+    },
+    "step": {
+      "ancestry": "Ancestry",
+      "heritage": "Heritage",
+      "background": "Background",
+      "class": "Class",
+      "abilities": "Abilities"
+    },
+    "ancestry": {
+      "description": "Choose an ancestry for your future character. The list is loaded from the PF2e ancestries compendium.",
+      "empty": "Could not find an ancestries compendium or it is empty. Please check your PF2e system setup.",
+      "noImage": "No image",
+      "details": {
+        "header": "Ancestry summary",
+        "size": "Size",
+        "hp": "Hit Points",
+        "speed": "Speed (ft)",
+        "abilities": "Ability boosts",
+        "flaws": "Ability flaws",
+        "languages": "Languages",
+        "additionalLanguages": "Additional languages",
+        "featuresHeader": "Features",
+        "featuresNone": "This ancestry has no built-in features.",
+        "none": "none",
+        "free": "free",
+        "descriptionHeader": "Description",
+        "hint": "Select an ancestry on the left to see its details."
+      }
+    },
+    "heritage": {
+      "description": "Choose a heritage available to the selected ancestry. Universal heritages are also available.",
+      "empty": "No heritages were found for this ancestry in the compendia.",
+      "noAncestry": "Select an ancestry first to see available heritages.",
+      "noImage": "No image",
+      "hint": "Select a heritage on the left to view its description."
+    },
+    "background": {
+      "description": "Choose a background for your character. The list is loaded from the PF2e backgrounds compendium.",
+      "empty": "Could not find a backgrounds compendium or it is empty.",
+      "noImage": "No image",
+      "details": {
+        "header": "Background summary",
+        "abilities": "Ability boosts",
+        "skills": "Trained skills",
+        "featuresHeader": "Features",
+        "featuresNone": "This background has no built-in features.",
+        "none": "none",
+        "descriptionHeader": "Description",
+        "hint": "Select a background on the left to see its details.",
+        "lore": "Lore: {lore}",
+        "additionalSkill": "Additionally {count} skill(s) of your choice"
+      }
+    },
+    "class": {
+      "description": "Choose a class for your character. The list is loaded from the PF2e classes compendium.",
+      "empty": "Could not find a classes compendium or it is empty.",
+      "noImage": "No image",
+      "details": {
+        "header": "Class summary",
+        "hp": "Hit Points per level",
+        "keyAbilities": "Key abilities",
+        "traits": "Traits",
+        "skillsHeader": "Skills",
+        "proficienciesHeader": "Proficiencies and defenses",
+        "perception": "Perception",
+        "savingThrows": "Saving throws",
+        "fortitude": "Fortitude",
+        "reflex": "Reflex",
+        "will": "Will",
+        "attacks": "Attacks (weapons)",
+        "attacksSimple": "Simple weapons",
+        "attacksMartial": "Martial weapons",
+        "attacksAdvanced": "Advanced weapons",
+        "attacksUnarmed": "Unarmed attacks",
+        "defenses": "Armor",
+        "defensesUnarmored": "Unarmored",
+        "defensesLight": "Light",
+        "defensesMedium": "Medium",
+        "defensesHeavy": "Heavy",
+        "classDC": "Class DC",
+        "none": "none",
+        "proficienciesNone": "This class has no built-in proficiencies.",
+        "spellcastingHeader": "Spellcasting",
+        "spellTradition": "Spell tradition",
+        "spellCastingType": "Casting type",
+        "noSpellcasting": "This class is not a spellcaster or has no base spellcasting.",
+        "keyChoicesHeader": "Key class choices (1st level)",
+        "noKeyChoices": "This class has no built-in key choices.",
+        "progressionHeader": "Level progression (signature features)",
+        "levelLabel": "Level",
+        "progressionNone": "No detailed progression is defined for this class.",
+        "descriptionHeader": "Description",
+        "hint": "Select a class on the left to see its details."
+      }
+    },
+    "abilities": {
+      "description": "A short summary of your current ability modifiers based on the selected ancestry, background and class.",
+      "modifiersRow": "Ability modifiers",
+      "hint": "These modifiers will be used by the PF2e system when resolving rolls. You can still adjust your base ability scores directly on the character sheet if needed."
+    },
+    "buttons": {
+      "close": "Close",
+      "prev": "Back",
+      "next": "Next"
+    },
+    "nav": {
+      "stepCounter": "Step {current} of {total}"
+    },
+    "common": {
+      "notImplemented": "This step of the master is not implemented yet."
+    }
+  }
+}
