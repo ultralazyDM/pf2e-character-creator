@@ -50,7 +50,8 @@
       "path": "lang/en.json"
     }
   ],
+
   "url": "https://github.com/yourname/pf2e-character-creator",
-  "manifest": "https://raw.githubusercontent.com/yourname/pf2e-character-creator/main/module.json",
+  "manifest": "https://raw.githubusercontent.com/ultralazyDM/pf2e-character-creator/main/module.json",
   "download": "https://github.com/yourname/pf2e-character-creator/archive/refs/heads/main.zip"
 }
