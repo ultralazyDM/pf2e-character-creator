@@ -107,7 +107,8 @@
     "abilities": {
       "description": "A short summary of your current ability modifiers based on the selected ancestry, background and class.",
       "modifiersRow": "Ability modifiers",
-      "hint": "These modifiers will be used by the PF2e system when resolving rolls. You can still adjust your base ability scores directly on the character sheet if needed."
+      "hint": "These modifiers will be used by the PF2e system when resolving rolls. You can still adjust your base ability scores directly on the character sheet if needed.",
+      "freeLimitWarning": "Only 4 free boosts are available at level 1."
     },
     "buttons": {
       "close": "Close",

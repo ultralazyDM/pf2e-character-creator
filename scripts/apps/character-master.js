@@ -34,6 +34,7 @@ class PF2ECharacterMasterApp extends HandlebarsApplicationMixin(ApplicationV2) {
             selectHeritage: PF2ECharacterMasterApp._onSelectHeritage,
             selectBackground: PF2ECharacterMasterApp._onSelectBackground,
             selectClass: PF2ECharacterMasterApp._onSelectClass,
+            toggleAbilityBoost: PF2ECharacterMasterApp._onToggleAbilityBoost,
             goPrevStep: PF2ECharacterMasterApp._onGoPrevStep,
             goNextStep: PF2ECharacterMasterApp._onGoNextStep,
             closeMaster: PF2ECharacterMasterApp._onCloseMaster
@@ -203,6 +204,38 @@ class PF2ECharacterMasterApp extends HandlebarsApplicationMixin(ApplicationV2) {
             });
         }
 
+        let abilitiesCtx = null;
+
+        if (this.currentStepId === "abilities") {
+            this.draft.abilityBoosts ??= {
+                ancestry: {},
+                background: {},
+                class: {},
+                free_lvl1: {}
+            };
+
+            const labels = this._abilityShortLabels(abilityKeys);
+
+            const clone =
+                foundry?.utils?.deepClone?.(this.draft.abilityBoosts) ??
+                JSON.parse(JSON.stringify(this.draft.abilityBoosts));
+
+            const totals = {};
+            for (const ab of abilityKeys) {
+                totals[ab] = Object.values(clone).reduce(
+                    (sum, pool) => sum + (pool?.[ab] ? 1 : 0),
+                    0
+                );
+            }
+
+            abilitiesCtx = {
+                abilities: abilityKeys,
+                labels,
+                sources: clone,
+                totals
+            };
+        }
+
         return {
             steps,
             currentStepId: this.currentStepId,
@@ -225,7 +258,8 @@ class PF2ECharacterMasterApp extends HandlebarsApplicationMixin(ApplicationV2) {
 
             actorName: this.actor?.name ?? null,
             nav,
-            abilitySummary
+            abilitySummary,
+            abilities: abilitiesCtx
         };
     }
 
@@ -299,6 +333,29 @@ class PF2ECharacterMasterApp extends HandlebarsApplicationMixin(ApplicationV2) {
         }
 
         return str.toUpperCase();
+    }
+
+    _abilityShortLabels(keys) {
+        const map = {};
+        const loc = (k) => game.i18n?.localize?.(k);
+
+        const entries = [
+            ["str", "PF2E.AbilityStrShort", "STR"],
+            ["dex", "PF2E.AbilityDexShort", "DEX"],
+            ["con", "PF2E.AbilityConShort", "CON"],
+            ["int", "PF2E.AbilityIntShort", "INT"],
+            ["wis", "PF2E.AbilityWisShort", "WIS"],
+            ["cha", "PF2E.AbilityChaShort", "CHA"]
+        ];
+
+        for (const [key, locKey, fallback] of entries) {
+            if (keys.includes(key)) {
+                const localized = loc(locKey);
+                map[key] = localized && localized !== locKey ? localized : fallback;
+            }
+        }
+
+        return map;
     }
 
     _languageLabel(key) {
@@ -1282,6 +1339,47 @@ class PF2ECharacterMasterApp extends HandlebarsApplicationMixin(ApplicationV2) {
         if (!classId) return;
 
         this.draft.classId = classId;
+        this.render();
+    }
+
+    static _onToggleAbilityBoost(event, target) {
+        event.preventDefault();
+
+        const source = target.dataset.source;
+        const ability = target.dataset.ability;
+        if (!source || !ability) return;
+
+        this.draft.abilityBoosts ??= {
+            ancestry: {},
+            background: {},
+            class: {},
+            free_lvl1: {}
+        };
+
+        const pools = this.draft.abilityBoosts;
+        const pool = pools[source];
+        if (!pool) return;
+
+        if (source === "free_lvl1") {
+            if (pool[ability]) {
+                delete pool[ability];
+            } else {
+                const currentCount = Object.keys(pool).length;
+                if (currentCount >= 4) {
+                    ui.notifications?.warn?.(
+                        game.i18n?.localize?.("PF2ECM.abilities.freeLimitWarning") ||
+                            "Доступно только 4 свободных повышения на 1 уровне."
+                    );
+                    return;
+                }
+
+                pool[ability] = true;
+            }
+        } else {
+            pool[ability] = !pool[ability];
+            if (!pool[ability]) delete pool[ability];
+        }
+
         this.render();
     }
 
