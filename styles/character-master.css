@@ -1,0 +1,257 @@
+/* styles/character-master.css */
+
+.pf2e-character-master .cm-container {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+/* Левая колонка со шагами */
+
+.pf2e-character-master .cm-sidebar {
+    width: 220px;
+    border-right: 1px solid var(--color-border-light-primary, #666);
+    padding: 0.5rem;
+    box-sizing: border-box;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.pf2e-character-master .cm-sidebar-header {
+    margin-bottom: 0.5rem;
+}
+
+    .pf2e-character-master .cm-sidebar-header h2 {
+        font-size: 1.1rem;
+        margin: 0;
+    }
+
+.pf2e-character-master .cm-steps-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.pf2e-character-master .cm-step-item {
+    padding: 0.4rem 0.5rem;
+    margin-bottom: 0.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+    .pf2e-character-master .cm-step-item:hover {
+        background: rgba(255, 255, 255, 0.15);
+    }
+
+    .pf2e-character-master .cm-step-item.active {
+        background: rgba(0, 0, 0, 0.15);
+        font-weight: bold;
+    }
+
+/* Основная область */
+
+.pf2e-character-master .cm-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0.75rem;
+    box-sizing: border-box;
+}
+
+.pf2e-character-master .cm-main-header h1 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.pf2e-character-master .cm-main-subtitle {
+    margin: 0.2rem 0 0.6rem 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.pf2e-character-master .cm-main-body {
+    flex: 1;
+    overflow: auto;
+}
+
+/* Футер */
+
+.pf2e-character-master .cm-footer {
+    border-top: 1px solid var(--color-border-light-primary, #666);
+    padding-top: 0.5rem;
+    margin-top: 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.pf2e-character-master .cm-footer-left {
+    font-size: 0.85rem;
+    opacity: 0.8;
+}
+
+.pf2e-character-master .cm-footer-right .cm-btn + .cm-btn {
+    margin-left: 0.25rem;
+}
+
+.pf2e-character-master .cm-btn {
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    border: 1px solid var(--color-border-light-primary, #666);
+    background: rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+    .pf2e-character-master .cm-btn:disabled {
+        opacity: 0.5;
+        cursor: default;
+    }
+
+    .pf2e-character-master .cm-btn:not(:disabled):hover {
+        background: rgba(0, 0, 0, 0.2);
+    }
+
+/* Заголовки шагов */
+
+.pf2e-character-master .cm-step-header h2 {
+    margin: 0 0 0.2rem 0;
+    font-size: 1.1rem;
+}
+
+.pf2e-character-master .cm-step-header p {
+    margin: 0 0 0.6rem 0;
+    font-size: 0.9rem;
+}
+
+/* Лэйаут шага: список + панель подробностей */
+
+.pf2e-character-master .cm-step-layout {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.pf2e-character-master .cm-step-list {
+    flex: 2;
+}
+
+.pf2e-character-master .cm-step-detail {
+    flex: 1;
+    border-left: 1px solid var(--color-border-light-primary, #666);
+    padding-left: 0.75rem;
+    box-sizing: border-box;
+    max-width: 320px;
+}
+
+/* Список карточек (родословные/наследия) */
+
+.pf2e-character-master .cm-ancestry-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.5rem;
+}
+
+.pf2e-character-master .cm-ancestry-card {
+    border-radius: 6px;
+    border: 1px solid var(--color-border-light-primary, #666);
+    padding: 0.4rem;
+    display: flex;
+    gap: 0.4rem;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+    .pf2e-character-master .cm-ancestry-card:hover {
+        background: rgba(255, 255, 255, 0.08);
+    }
+
+    .pf2e-character-master .cm-ancestry-card.selected {
+        border-color: var(--color-border-highlight, #ff9800);
+        box-shadow: 0 0 0 1px rgba(255, 152, 0, 0.6);
+    }
+
+.pf2e-character-master .cm-ancestry-image {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+    .pf2e-character-master .cm-ancestry-image img {
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
+    }
+
+.pf2e-character-master .cm-ancestry-placeholder {
+    font-size: 0.7rem;
+    text-align: center;
+    padding: 0.2rem;
+}
+
+.pf2e-character-master .cm-ancestry-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.pf2e-character-master .cm-ancestry-name {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.pf2e-character-master .cm-heritage-ancestry {
+    margin: 0.15rem 0 0 0;
+    font-size: 0.75rem;
+    opacity: 0.8;
+}
+
+.pf2e-character-master .cm-empty {
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* Панель подробностей */
+
+.pf2e-character-master .cm-detail-block h3 {
+    margin: 0 0 0.4rem 0;
+    font-size: 1rem;
+}
+
+.pf2e-character-master .cm-detail-subheader {
+    margin: 0.6rem 0 0.2rem 0;
+    font-size: 0.95rem;
+}
+
+.pf2e-character-master .cm-detail-dl {
+    margin: 0;
+    font-size: 0.85rem;
+}
+
+    .pf2e-character-master .cm-detail-dl dt {
+        font-weight: bold;
+    }
+
+    .pf2e-character-master .cm-detail-dl dd {
+        margin: 0 0 0.25rem 0;
+    }
+
+.pf2e-character-master .cm-detail-description {
+    max-height: 260px;
+    overflow: auto;
+    padding-right: 0.25rem;
+    font-size: 0.85rem;
+}
+
+/* Индикатор шага */
+
+.pf2e-character-master .cm-step-indicator {
+    font-size: 0.85rem;
+}
